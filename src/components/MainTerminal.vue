@@ -2,7 +2,7 @@
     <div class="terminal">
         <div id="output"></div>
         <div id="prompt">
-            <span id="username">dusdjhyeon></span>
+            <span id="username">dusdjhyeon></span>  <!--set dynamic after-->
             <input id="input" type="text">
         </div>
     </div>
