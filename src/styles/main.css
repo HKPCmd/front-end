@@ -1,0 +1,10 @@
+html,
+body,
+#app {
+    background-color: #2e2c2c;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
