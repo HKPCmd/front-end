@@ -10,10 +10,13 @@
             </button>
             <div v-if="clickedIndex === index" class="pods-list">
                 <div v-for="(status, podname) in podData" :key="podname" class="pod-info">
-                    <div class="pod-wrapper">
-                        {{ podname }}
-                    </div>
                     <span :class="{ 'running': status === 'Running', 'not-running': status !== 'Running' }"></span>
+                    <button
+                    class="pod-wrapper"
+                    :class="{ 'underline': underlineIndex === podname }"
+                    @click="underlineText(podname)">
+                        {{ podname }}
+                    </button>
                 </div>
             </div>
         </div>       
@@ -31,10 +34,11 @@ export default {
     data() {
         return {
             clickedIndex: null,
+            underlineIndex: null,
             podData: {
                 "pod1": "Running",
                 "pod2": "Pending",
-                "pod3": "Failed",
+                "ubuntu-pod": "Failed",
             }
         }
     },
@@ -45,6 +49,9 @@ export default {
             } else {
                 this.clickedIndex = index;
             }
+        },
+        underlineText(podname) {
+            this.underlineIndex = podname;
         }
     }
 }
@@ -66,6 +73,7 @@ export default {
     color:beige;
     background-color: transparent;
     flex-direction: column;
+    cursor: pointer;
 }
 .box-clicked {
     background-color:rgb(121, 113, 103);
@@ -74,30 +82,38 @@ export default {
     border: 0;
     outline: 0;
     height: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
 }
 .pod-info {
     display: flex;
     align-items: center;
     font-size: 13px;
-    justify-content: center;
+    padding-left: 10px;
+    justify-content: left;
 }
 .pod-wrapper {
     margin: 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color:beige;
+}
+.underline {
+    text-decoration: underline;
+    text-decoration-color: beige;
+    text-decoration-thickness: 2px;
 }
 .running {
     width: 10px;
     height: 10px;
     background-color: rgb(5, 155, 5);
     border-radius: 50%;
-    margin-left: 10px;
 }
 .not-running {
     width: 10px;
     height: 10px;
     background-color: red;
     border-radius: 50%;
-    margin-left: 10px;
 }
 </style>
