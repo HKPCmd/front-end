@@ -25,25 +25,29 @@
 }
 
 #input {
+    vertical-align: top;
+    resize: none;
+    overflow: auto;
     border: none;
-    color: #2e2c2c;
+    color: #69243b;
     background: none;
     outline: none;
+    margin-right: 10px;
     width: 100%;
-    font-size: 14px;
-    padding: 5px;
+    font-size: 15px;
     flex-grow: 1;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
+    font-weight: 600;
 }
 #prompt {
     display: flex; 
-    align-items: center;
+    align-items: flex-start;
     margin-top: -5px; 
 }
 
 #username {
-    color: #2e2c2c;
+    padding-top: 4px;
+    color: #2e2c2d;
     margin-right: 3px;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 900;
 }

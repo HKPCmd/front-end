@@ -9,7 +9,7 @@
                 {{  item  }}
             </button>
             <div v-if="clickedIndex === index" class="pods-list">
-                <div v-for="(status, podname) in podData" :key="podname" class="pod-info">
+                <div v-for="(status, podname) in podList" :key="podname" class="pod-info">
                     <span :class="{ 'running': status === 'Running', 'not-running': status !== 'Running' }"></span>
                     <button
                     class="pod-wrapper"
@@ -34,12 +34,8 @@ export default {
     data() {
         return {
             clickedIndex: null,
+            podList: {},
             underlineIndex: null,
-            podData: {
-                "pod1": "Running",
-                "pod2": "Pending",
-                "ubuntu-pod": "Failed",
-            }
         }
     },
     methods: {
@@ -48,6 +44,14 @@ export default {
                 this.clickedIndex = null;
             } else {
                 this.clickedIndex = index;
+                var namespace = this.list[index];
+                this.$axios.get('/pods', { params: { namespace: namespace} })
+                    .then(response => {
+                        this.podList = response.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
             }
         },
         underlineText(podname) {
@@ -64,7 +68,7 @@ export default {
     height: 40px;  
     display: flex; 
     align-items: center; 
-    justify-content: center; 
+    justify-content: space-between; 
     padding: 10px;
     margin: 0px;
     width: 100%;
@@ -93,6 +97,8 @@ export default {
     justify-content: left;
 }
 .pod-wrapper {
+    text-align: left;
+    white-space: normal;
     margin: 5px;
     border: none;
     background: transparent;
