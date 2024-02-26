@@ -15,6 +15,7 @@
 
 <script>
 import NamespaceBlock from './NamespaceBlock.vue'
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -23,8 +24,10 @@ export default {
     data() {
         return {
             clusterName: 'minikube',
-            namespaceList: []
         }
+    },
+    computed: {
+        ...mapState(['namespaceList']),
     },
     created() {
         this.getNamespaces();
@@ -33,7 +36,7 @@ export default {
         getNamespaces() {
             this.$axios.get('/namespaces')
             .then(response => {
-                this.namespaceList = response.data;
+                this.$store.commit('setNamespaceList', response.data);
             })
             .catch(error => {
                 console.log(error)

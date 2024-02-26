@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
     props: {
         list: {
@@ -39,12 +41,14 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['setNamespace', 'setPodname']),
         selectBox(index) {
             if (this.clickedIndex === index) {
                 this.clickedIndex = null;
             } else {
                 this.clickedIndex = index;
                 var namespace = this.list[index];
+                this.setNamespace(namespace);
                 this.$axios.get('/pods', { params: { namespace: namespace} })
                     .then(response => {
                         this.podList = response.data;
@@ -55,6 +59,7 @@ export default {
             }
         },
         underlineText(podname) {
+            this.setPodname(podname);
             this.underlineIndex = podname;
         }
     }
