@@ -9,13 +9,19 @@
 //import HelloWorld from './components/HelloWorld.vue'
 import Terminal from './components/MainTerminal.vue'
 import Sidebar from './components/SideBar.vue'
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    //HelloWorld
     Terminal,
     Sidebar
+  },
+  computed: {
+    ...mapState(['namespace', 'podname']),
+  },
+  methods: {
+    ...mapMutations(['setNamespace', 'setPodname']),
   }
 }
 </script>
