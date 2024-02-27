@@ -1,20 +1,21 @@
 <template>
     <div class="terminal">
-        <div id="output"></div>
+        <div class="commands">
+            <div v-for="(command, index) in commands" :key="'command' + index">
+                <div class="command">
+                    <span class="username">dusdjhyeon></span>{{ command }}
+                </div>
+                <div class="response" v-if="responses[index] !== undefined" ref="response">
+                    <pre>{{ responses[index] }}</pre>
+                </div>
+            </div>
+        </div>
         <div id="prompt">
             <span id="username">dusdjhyeon></span>
-            <textarea id="input" 
-                rows="1" 
-                spellcheck="false" 
-                ref="textarea" 
-                v-model="message" 
-                @input="handleResizeHeight" 
-                @keydown.enter.prevent="sendMessage">
-            </textarea>
+            <textarea id="input" rows="1" spellcheck="false" ref="textarea" v-model="message" @input="handleResizeHeight" @keydown.enter.prevent="sendMessage"></textarea>
         </div>
     </div>
 </template>
-
 <script>
 import { mapState } from 'vuex';
 
@@ -23,7 +24,8 @@ export default {
         return {
             socket: null,
             message: '',
-            outputs: [],
+            commands: [],
+            responses: [],
         };
     },
     computed: {
@@ -37,12 +39,14 @@ export default {
                 command: this.message
             };
             if (this.socket) {
+                this.commands.push(this.message);
                 this.socket.send(JSON.stringify(data));
+                this.message = '';
             }
         },
         receiveMessage(data) {
-            const { Stdout, Stderr } = JSON.parse(data);
-            this.outputs.push(Stdout || Stderr);
+            const { stdout, stderr } = JSON.parse(data);
+            this.responses.push(stdout || stderr);
         },
         handleResizeHeight() {
             this.$refs.textarea.style.height = 'auto';
@@ -63,15 +67,23 @@ export default {
         this.socket.onerror = (event) => {
             console.error('WebSocket encountered error: ', event);
         };
-        this.handleResizeHeight();
     },
     beforeDestroy() {
         if (this.socket) {
             this.socket.close();
         }
     },
-    updated() {
+    mounted() {
         this.handleResizeHeight();
+    },
+    updated() {
+        this.$nextTick(function () {
+            this.handleResizeHeight();
+            const terminalElement = this.$el.querySelector('.terminal');
+            if (terminalElement) {
+                terminalElement.scrollTop = terminalElement.scrollHeight;
+            }
+        })
     },
 }
 </script>
