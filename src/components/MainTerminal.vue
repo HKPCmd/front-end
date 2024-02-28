@@ -45,8 +45,7 @@ export default {
             }
         },
         receiveMessage(data) {
-            const { stdout, stderr } = JSON.parse(data);
-            this.responses.push(stdout || stderr);
+            this.responses.push(data);
         },
         handleResizeHeight() {
             this.$refs.textarea.style.height = 'auto';
